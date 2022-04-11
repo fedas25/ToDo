@@ -53,8 +53,3 @@ const list = {
         show("Done");
     }
 }
-
-list.addTask("1fe e eed");
-list.addTask("2fed e e");
-list.addTask("3fddd dd");
-list.showList();
