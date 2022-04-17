@@ -11,7 +11,7 @@ body {
     flex-direction: column;
 }
 
-.hight_priority {
+.priority {
     text-transform: uppercase;
     margin: 25px 0 15px 0;
     font-family: arial;
