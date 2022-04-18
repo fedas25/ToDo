@@ -1,17 +1,6 @@
 const list = {
-    list: [{
-        id: 1,
-        name: "сделать to Do",
-        status: "todo",
-        priority: 'low'
-    },
-    {
-        id: 2,
-        name: "потупить",
-        status: "todo",
-        priority: 'hight'
-    }], // задачи task  id, name, status, priority        {
-
+    list: [], // задачи task  id, name, status, priority        {
+    counttask: 0,
     changeStatus: (task, status) => { //меняет cтатус по названию task
         let index = list.list.findIndex(fun = (elem) => {
             return (elem.name == task) ? true : false;
@@ -54,30 +43,31 @@ const list = {
     }
 }
 
-
-// let renderTask = () => { };  отображает все задачи из list в dom
-// беря во внимание приоритет и "сделанность" задачи
-
 let performTask = () => { }; // изменит статус выполнения задачи в list   + displayTask
 // cделать отображение сделанных задач из list
+
+// отображает все задачи из list в dom
+// беря во внимание приоритет и "сделанность" задачи
 let renderTask = () => {
     for (let i = 0; i < list.list.length; i++) {
-        if (list.list[i].priority === "hight") {
-            formHi.insertAdjacentHTML('afterend',
-                `<div class="form_task">
+        if (list.list[i] !== "") {
+            if (list.list[i].priority === "hight") {
+                formHi.insertAdjacentHTML('afterend',
+                    `<div class="form_task">
               <div><input type="checkbox"></div>
               <div class="task">${list.list[i].name}</div>
               <img name="hight" class="close_icon" src="close-icon.svg">
             </div>`);
-            linkingDeleteIcon("hight");
-        } else {
-            formLow.insertAdjacentHTML('afterend',
-                `<div class="form_task">
+                linkingDeleteIcon("hight", list.list[i].id);
+            } else {
+                formLow.insertAdjacentHTML('afterend',
+                    `<div class="form_task">
               <div><input type="checkbox"></div>
               <div class="task">${list.list[i].name}</div>
               <img name="low" class="close_icon" src="close-icon.svg">
             </div>`);
-            linkingDeleteIcon("low");
+                linkingDeleteIcon("low", list.list[i].id);
+            }
         }
     }
 }
@@ -95,7 +85,12 @@ let displayTask = () => { // выводит актуальные задачи и
 }
 
 let createTask = (priority) => {
-    if ((priority === "hight") || (priority.currentTarget.id === "hight")) {
+    if (typeof priority !== "string") {
+        priority = (priority.currentTarget.id === "hight") ? "hight" : "low";
+
+    }
+
+    if (priority === "hight") {
         list.list.push(
             {
                 id: list.list.length + 1,
@@ -119,24 +114,29 @@ let createTask = (priority) => {
     displayTask();
 }
 
-linkingDeleteIcon = (priority) => {
-    addListenerClick((priority === "hight") ? delIconHi = document.querySelectorAll('img[name="hight"]') : delIconLow = document.querySelectorAll('img[name="low"]'));
+let linkingDeleteIcon = (priority, idTask) => {
+    addListenerClick((priority === "hight") ? delIconHi = document.querySelectorAll('img[name="hight"]') : delIconLow = document.querySelectorAll('img[name="low"]'), idTask);
 }
 
-let addListenerClick = (delIcons) => {
-    for (const delIcon of delIcons) {
+let addListenerClick = (delIcons, idTask) => {
+    for (let delIcon of delIcons) {
         if (delIcon.getAttribute('listener') !== 'true') {
-            // delIcon.task.target = ""; // небогоугодно
-            delIcon.addEventListener('click', deliteTask);
+            delIcon.addEventListener('click', deleteTask);
             delIcon.setAttribute('listener', 'true');
-            delIcon.classList.add("losos"); // что - то придумать
+            delIcon.setAttribute('id_task', idTask); // что - то придумать
         }
     }
 }
 
-let deliteTask = () => {
-
-};  // удаляет задачу из list     + displayTask
+let deleteTask = (task) => { // удаляет задачу из list
+    let id_task = task.target.getAttribute("id_task")
+    for (let i = 0; i < list.list.length; i++) {
+        if (list.list[i].id == id_task) {
+            list.list[i] = "";
+        }
+    }
+    displayTask();
+};
 
 let formHi = document.querySelector('div[name="high_priority"]');
 let inputHi = document.querySelector('div[name="high_priority"] > .input');
@@ -148,13 +148,9 @@ let inputLow = document.querySelector('div[name="low_priority"] > .input');
 let buttonLow = document.querySelector('div[name="low_priority"] > .add');
 let delIconLow = undefined; // невозможно привязать, нет в dom
 
-
 inputHi.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("hight") } }); // чуть изменить для объектов
 buttonHi.addEventListener('click', createTask);
-
 inputLow.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("low"); } }); // чуть изменить для объектов
 buttonLow.addEventListener('click', createTask);
 
-
-
-// displayTask();
+displayTask();
