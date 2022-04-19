@@ -1,85 +1,42 @@
 const list = {
-    list: [], // задачи task  id, name, status, priority        {
-    counttask: 0,
-    changeStatus: (task, status) => { //меняет cтатус по названию task
-        let index = list.list.findIndex(fun = (elem) => {
-            return (elem.name == task) ? true : false;
-        })
-        if (index !== -1) {
-            list.list[index].status = status;
-        }
-    },
-
-    changePriority: (task, priority) => { // меняет приоритет по названию task
-        let index = list.list.findIndex(fun = (elem) => {
-            return (elem.name == task) ? true : false;
-        })
-        if (index !== -1) {
-            list.list[index].priority = priority;
-        }
-    },
-
-    deleteTask: (task) => {
-        let index = list.list.findIndex(fun = (elem) => {
-            return ((elem !== undefined) && (elem.name == task)) ? true : false;
-        })
-        delete list.list[index]
-    },
-
-    showList: () => {
-        let show = (word) => {
-            let task = "";
-            for (const key of list.list) {
-                if (word == key.status) {
-                    task = task + " \"" + key.name + "\",\n"
-                }
-            }
-            task = task.substring(0, task.length - 2);
-            console.log(task ? word + ":\n" + task : word + ":\n" + "-");
-        }
-        show("todo");
-        show("In Progress");
-        show("Done");
-    }
+    list: [], // with object {id, name, status //done todo, priority //low hight}
+    counttask: 0
 }
 
-let performTask = () => { }; // изменит статус выполнения задачи в list   + displayTask
-// cделать отображение сделанных задач из list
-
-// отображает все задачи из list в dom
-// беря во внимание приоритет и "сделанность" задачи
 let renderTask = () => {
     for (let i = 0; i < list.list.length; i++) {
         if (list.list[i] !== "") {
             if (list.list[i].priority === "hight") {
                 formHi.insertAdjacentHTML('afterend',
-                    `<div class="form_task">
+                    `<div class="form_task ${list.list[i].status}">
               <div><input type="checkbox"></div>
               <div class="task">${list.list[i].name}</div>
               <img name="hight" class="close_icon" src="close-icon.svg">
             </div>`);
                 linkingDeleteIcon("hight", list.list[i].id);
+                linkingCheckboxTodo(list.list[i].id);
             } else {
                 formLow.insertAdjacentHTML('afterend',
-                    `<div class="form_task">
+                    `<div class="form_task ${list.list[i].status}">
               <div><input type="checkbox"></div>
               <div class="task">${list.list[i].name}</div>
               <img name="low" class="close_icon" src="close-icon.svg">
             </div>`);
                 linkingDeleteIcon("low", list.list[i].id);
+                linkingCheckboxTodo(list.list[i].id);
             }
         }
     }
 }
 
-let clearTask = () => {   // очищает все задачи из doom, а не list
+let clearTask = () => {   // clears tasks from doom
     let tasks = document.querySelectorAll('.form_task');
     for (const task of tasks) {
         task.remove();
     }
 };
 
-let displayTask = () => { // выводит актуальные задачи из list
+let displayTask = () => { // displays current tasks from the list
     clearTask();
     renderTask();
 }
@@ -115,20 +72,52 @@ let createTask = (priority) => {
 }
 
 let linkingDeleteIcon = (priority, idTask) => {
-    addListenerClick((priority === "hight") ? delIconHi = document.querySelectorAll('img[name="hight"]') : delIconLow = document.querySelectorAll('img[name="low"]'), idTask);
+    addListenerClickDeleteIcon((priority === "hight") ? delIconHi = document.querySelectorAll('img[name="hight"]') : delIconLow = document.querySelectorAll('img[name="low"]'), idTask);
 }
 
-let addListenerClick = (delIcons, idTask) => {
+let addListenerClickDeleteIcon = (delIcons, idTask) => {
     for (let delIcon of delIcons) {
         if (delIcon.getAttribute('listener') !== 'true') {
             delIcon.addEventListener('click', deleteTask);
             delIcon.setAttribute('listener', 'true');
-            delIcon.setAttribute('id_task', idTask); // что - то придумать
+            delIcon.setAttribute('id_task', idTask);
         }
     }
 }
 
-let deleteTask = (task) => { // удаляет задачу из list
+let linkingCheckboxTodo = (idTask) => {
+    addListenerClickCheckboxTodo(checkboxTodo = document.querySelectorAll('input[type="checkbox"]'), idTask);
+}
+
+let addListenerClickCheckboxTodo = (checkboxesTodo, idTask) => {
+    for (let checkboxTodo of checkboxesTodo) {
+        if (checkboxTodo.getAttribute('listener') !== 'true') {
+            checkboxTodo.addEventListener('click', changePriority);
+            checkboxTodo.setAttribute('listener', 'true');
+            checkboxTodo.setAttribute('id_task', idTask);
+        }
+    }
+}
+
+let changePriority = (checkbox) => { 
+    if (checkbox.target.parentNode.parentNode.classList.contains("done")) {
+        checkbox.target.parentNode.parentNode.classList.remove("done");
+    } else {
+        checkbox.target.parentNode.parentNode.classList.add("done");
+    }
+
+    for (let i = 0; i < list.list.length; i++) {
+        if (checkbox.target.getAttribute("id_task") == list.list[i].id) {
+            if (list.list[i].status == "todo") {
+                list.list[i].status = "done";
+            } else {
+                list.list[i].status = "todo";
+            }
+        }
+    }
+}
+
+let deleteTask = (task) => { // from list
     let id_task = task.target.getAttribute("id_task")
     for (let i = 0; i < list.list.length; i++) {
         if (list.list[i].id == id_task) {
@@ -141,12 +130,14 @@ let deleteTask = (task) => { // удаляет задачу из list
 let formHi = document.querySelector('div[name="high_priority"]');
 let inputHi = document.querySelector('div[name="high_priority"] > .input');
 let buttonHi = document.querySelector('div[name="high_priority"] > .add');
-let delIconHi = undefined; // невозможно привязать, нет в dom
+let delIconHi = undefined; // not in dom
+
+let checkboxTodo = undefined; // not in dom
 
 let formLow = document.querySelector('div[name="low_priority"]');
 let inputLow = document.querySelector('div[name="low_priority"] > .input');
 let buttonLow = document.querySelector('div[name="low_priority"] > .add');
-let delIconLow = undefined; // невозможно привязать, нет в dom
+let delIconLow = undefined; // not in dom
 
 inputHi.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("hight") } }); // чуть изменить для объектов
 buttonHi.addEventListener('click', createTask);
