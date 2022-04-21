@@ -2,26 +2,31 @@ const list = {
     list: [], // with object {id, name, status //done todo, priority //low hight}
     counttask: 0
 }
-
-let renderTask = () => {
+ 
+let renderTask = () => {         //  +_+
     for (let i = 0; i < list.list.length; i++) {
         if (list.list[i] !== "") {
             if (list.list[i].priority === "hight") {
                 formHi.insertAdjacentHTML('afterend',
-                    `<div class="form_task ${list.list[i].status}">
-              <div><input type="checkbox"></div>
-              <div class="task">${list.list[i].name}</div>
-              <img name="hight" class="close_icon" src="close-icon.svg">
-            </div>`);
+                `<div class="form_task ${list.list[i].status}">
+                    <div class="checkbox">
+                        <div class="checkbox_circle"></div>
+                    </div>
+                    <div class="task">${list.list[i].name}</div>
+                    <img name="hight" class="close_icon" src="close-icon.svg">
+                </div>`);
                 linkingDeleteIcon("hight", list.list[i].id);
                 linkingCheckboxTodo(list.list[i].id);
+                
             } else {
                 formLow.insertAdjacentHTML('afterend',
-                    `<div class="form_task ${list.list[i].status}">
-              <div><input type="checkbox"></div>
-              <div class="task">${list.list[i].name}</div>
-              <img name="low" class="close_icon" src="close-icon.svg">
-            </div>`);
+                `<div class="form_task ${list.list[i].status}">
+                    <div class="checkbox">
+                        <div class="checkbox_circle"></div>
+                    </div>
+                    <div class="task">${list.list[i].name}</div>
+                    <img name="low" class="close_icon" src="close-icon.svg">
+                </div>`);
                 linkingDeleteIcon("low", list.list[i].id);
                 linkingCheckboxTodo(list.list[i].id);
             }
@@ -29,14 +34,14 @@ let renderTask = () => {
     }
 }
 
-let clearTask = () => {   // clears tasks from doom
+let clearTask = () => {   // clears tasks from doom       +_+
     let tasks = document.querySelectorAll('.form_task');
     for (const task of tasks) {
         task.remove();
     }
 };
 
-let displayTask = () => { // displays current tasks from the list
+let displayTask = () => { // displays current tasks from the list  +_+
     clearTask();
     renderTask();
 }
@@ -86,7 +91,7 @@ let addListenerClickDeleteIcon = (delIcons, idTask) => {
 }
 
 let linkingCheckboxTodo = (idTask) => {
-    addListenerClickCheckboxTodo(checkboxTodo = document.querySelectorAll('input[type="checkbox"]'), idTask);
+    addListenerClickCheckboxTodo(checkboxTodo = document.querySelectorAll('.checkbox'), idTask);
 }
 
 let addListenerClickCheckboxTodo = (checkboxesTodo, idTask) => {
@@ -99,11 +104,12 @@ let addListenerClickCheckboxTodo = (checkboxesTodo, idTask) => {
     }
 }
 
-let changePriority = (checkbox) => { 
-    if (checkbox.target.parentNode.parentNode.classList.contains("done")) {
-        checkbox.target.parentNode.parentNode.classList.remove("done");
+let changePriority = (checkbox) => { // добавить обработку виполненности с помощью шарика
+    debugger
+    if (checkbox.target.parentNode.classList.contains("done")) {
+        checkbox.target.parentNode.classList.remove("done");
     } else {
-        checkbox.target.parentNode.parentNode.classList.add("done");
+        checkbox.target.parentNode.classList.add("done");
     }
 
     for (let i = 0; i < list.list.length; i++) {
@@ -139,9 +145,9 @@ let inputLow = document.querySelector('div[name="low_priority"] > .input');
 let buttonLow = document.querySelector('div[name="low_priority"] > .add');
 let delIconLow = undefined; // not in dom
 
-inputHi.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("hight") } }); // чуть изменить для объектов
+inputHi.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("hight") } });
 buttonHi.addEventListener('click', createTask);
-inputLow.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("low"); } }); // чуть изменить для объектов
+inputLow.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("low"); } });
 buttonLow.addEventListener('click', createTask);
 
 displayTask();
