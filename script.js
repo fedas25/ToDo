@@ -1,26 +1,33 @@
 const list = {
-    list: [], // with object {id, name, status //done todo, priority //low hight}
+    list: [], // with object {id, name, status //done todo, priority //low high}
     counttask: 0
 }
- 
+
 let renderTask = () => {         //  +_+
     for (let i = 0; i < list.list.length; i++) {
         if (list.list[i] !== "") {
-            if (list.list[i].priority === "hight") {
+            if (list.list[i].priority === "high") {
                 formHi.insertAdjacentHTML('afterend',
-                `<div class="form_task ${list.list[i].status}">
+                    `<div formid="${list.list[i].id}" class="form_task ${list.list[i].status}">
                     <div class="checkbox">
                         <div class="checkbox_circle"></div>
                     </div>
                     <div class="task">${list.list[i].name}</div>
-                    <img name="hight" class="close_icon" src="close-icon.svg">
+                    <img name="high" class="close_icon" src="close-icon.svg">
                 </div>`);
-                linkingDeleteIcon("hight", list.list[i].id);
+                linkingDeleteIcon("high", list.list[i].id);
+
+///////////////////////
+
+
                 linkingCheckboxTodo(list.list[i].id);
-                
+
+
+///////////////////////////////
+
             } else {
                 formLow.insertAdjacentHTML('afterend',
-                `<div class="form_task ${list.list[i].status}">
+                    `<div class="form_task ${list.list[i].status}">
                     <div class="checkbox">
                         <div class="checkbox_circle"></div>
                     </div>
@@ -28,13 +35,13 @@ let renderTask = () => {         //  +_+
                     <img name="low" class="close_icon" src="close-icon.svg">
                 </div>`);
                 linkingDeleteIcon("low", list.list[i].id);
-                linkingCheckboxTodo(list.list[i].id);
+                // linkingCheckboxTodo(list.list[i].id);
             }
         }
     }
 }
 
-let clearTask = () => {   // clears tasks from doom       +_+
+let clearTask = () => {   // clears tasks from doom                +_+
     let tasks = document.querySelectorAll('.form_task');
     for (const task of tasks) {
         task.remove();
@@ -46,38 +53,36 @@ let displayTask = () => { // displays current tasks from the list  +_+
     renderTask();
 }
 
-let createTask = (priority) => {
-    if (typeof priority !== "string") {
-        priority = (priority.currentTarget.id === "hight") ? "hight" : "low";
-
-    }
-
-    if (priority === "hight") {
-        list.list.push(
-            {
-                id: list.list.length + 1,
-                name: inputHi.value,
-                status: "todo",
-                priority: "hight"
-            }
-        )
-        inputHi.value = '';
-    } else {
-        list.list.push(
-            {
-                id: list.list.length + 1,
-                name: inputLow.value,
-                status: "todo",
-                priority: "low"
-            }
-        )
-        inputLow.value = '';
+let createTask = (event) => {   //                                 +_+
+    if ((event.keyCode === undefined) || (event.keyCode === 13)) {
+        let priority = event.target.parentNode.getAttribute("name").slice(0, 4);
+        if (priority === "high") {
+            list.list.push(
+                {
+                    id: list.list.length + 1,
+                    name: inputHi.value,
+                    status: "todo",
+                    priority: priority
+                }
+            )
+            inputHi.value = '';
+        } else {
+            list.list.push(
+                {
+                    id: list.list.length + 1,
+                    name: inputLow.value,
+                    status: "todo",
+                    priority: priority.slice(0, 3)
+                }
+            )
+            inputLow.value = '';
+        }
     }
     displayTask();
 }
 
 let linkingDeleteIcon = (priority, idTask) => {
-    addListenerClickDeleteIcon((priority === "hight") ? delIconHi = document.querySelectorAll('img[name="hight"]') : delIconLow = document.querySelectorAll('img[name="low"]'), idTask);
+    addListenerClickDeleteIcon((priority === "high") ? delIconHi = document.querySelectorAll('img[name="high"]') : delIconLow = document.querySelectorAll('img[name="low"]'), idTask);
 }
 
 let addListenerClickDeleteIcon = (delIcons, idTask) => {
@@ -90,8 +95,19 @@ let addListenerClickDeleteIcon = (delIcons, idTask) => {
     }
 }
 
+
+
+
+
+
+
+
+
 let linkingCheckboxTodo = (idTask) => {
-    addListenerClickCheckboxTodo(checkboxTodo = document.querySelectorAll('.checkbox'), idTask);
+    // debugger
+    document.querySelector(`div[formid="${idTask}"`).childNodes[1].addEventListener('click', changePriority);
+
+    // addListenerClickCheckboxTodo(checkboxTodo = document.querySelector(`div[formid="${idTask}"`), idTask);
 }
 
 let addListenerClickCheckboxTodo = (checkboxesTodo, idTask) => {
@@ -104,13 +120,15 @@ let addListenerClickCheckboxTodo = (checkboxesTodo, idTask) => {
     }
 }
 
-let changePriority = (checkbox) => { // добавить обработку виполненности с помощью шарика
-    debugger
-    if (checkbox.target.parentNode.classList.contains("done")) {
-        checkbox.target.parentNode.classList.remove("done");
+let changePriority = (checkbox) => { // добавить обработку виполненности с помощью шарика 
+                                    //  через id задания
+    if (checkbox.target.parentNode.parentNode.classList.contains("done")) {
+        checkbox.target.parentNode.parentNode.classList.remove("done");
     } else {
-        checkbox.target.parentNode.classList.add("done");
+        checkbox.target.parentNode.parentNode.classList.add("done");
     }
+
+
 
     for (let i = 0; i < list.list.length; i++) {
         if (checkbox.target.getAttribute("id_task") == list.list[i].id) {
@@ -122,6 +140,18 @@ let changePriority = (checkbox) => { // добавить обработку ви
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 let deleteTask = (task) => { // from list
     let id_task = task.target.getAttribute("id_task")
@@ -145,9 +175,9 @@ let inputLow = document.querySelector('div[name="low_priority"] > .input');
 let buttonLow = document.querySelector('div[name="low_priority"] > .add');
 let delIconLow = undefined; // not in dom
 
-inputHi.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("hight") } });
+inputHi.addEventListener('keydown', createTask);
 buttonHi.addEventListener('click', createTask);
-inputLow.addEventListener('keydown', function (key) { if (key.keyCode === 13) { createTask("low"); } });
+inputLow.addEventListener('keydown', createTask);
 buttonLow.addEventListener('click', createTask);
 
 displayTask();

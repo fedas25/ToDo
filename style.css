@@ -77,8 +77,9 @@ body {
 
 .task {
     padding: 10px 5px;
-    line-height: 150%;
+    line-height: 110%;
     width: 85%;
+    overflow-wrap: anywhere;
     font-size:20px;
 }
 
