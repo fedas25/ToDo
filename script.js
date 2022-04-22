@@ -1,8 +1,8 @@
 const list = {
-    list: [], // with object {id, name, status //done todo, priority //low high}
+    list: [] // with object {id, name, status //done todo, priority //low high}
 }
 
-let renderTask = () => {         //  +_+
+let renderTask = () => {              //  +_+
     for (let i = 0; i < list.list.length; i++) {
         if (list.list[i] !== "") {
             if (list.list[i].priority === "high") {
@@ -16,7 +16,6 @@ let renderTask = () => {         //  +_+
                 </div>`);
                 linkingDeleteIcon(list.list[i].id);
                 linkingCheckboxTodo(list.list[i].id);
-
             } else {
                 formLow.insertAdjacentHTML('afterend',
                     `<div formid="${list.list[i].id}" class="form_task ${list.list[i].status}">
@@ -29,6 +28,7 @@ let renderTask = () => {         //  +_+
                 linkingDeleteIcon(list.list[i].id);
                 linkingCheckboxTodo(list.list[i].id);
             }
+
         }
     }
 }
@@ -69,8 +69,8 @@ let createTask = (event) => {   //                                 +_+
             )
             inputLow.value = '';
         }
-    }
     displayTask();
+    }
 }
 
 let linkingDeleteIcon = (idTask) => { 
@@ -119,7 +119,6 @@ let changePriority = (checkbox) => { // добавить обработку ви
 let formHi = document.querySelector('div[name="high_priority"]');
 let inputHi = document.querySelector('div[name="high_priority"] > .input');
 let buttonHi = document.querySelector('div[name="high_priority"] > .add');
-
 
 let formLow = document.querySelector('div[name="low_priority"]');
 let inputLow = document.querySelector('div[name="low_priority"] > .input');

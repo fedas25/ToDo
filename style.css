@@ -4,11 +4,12 @@ body {
 
 .main_container {
     width: 500px;
-    height: 700px;
+    min-height: 700px;
     background: #8dc6fc;
     margin: 30px auto;
     display: flex;
     flex-direction: column;
+    padding-bottom: 10px;
 }
 
 .priority {
@@ -111,4 +112,8 @@ body {
     margin: 5px;
     border-radius: 50%;
     background-color: #4a8888;
+}
+
+.todo > .checkbox > .checkbox_circle {
+    display: none;
 }
