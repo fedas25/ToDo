@@ -44,11 +44,7 @@ let displayTask = () => { // displays current tasks from the list      +_+
     renderTask();
 }
 
-<<<<<<< HEAD
 let createTask = (event) => {   //  from list                              +_+
-=======
-let createTask = (event) => {   //   list                              +_+
->>>>>>> 2276f186c2ffcd8a23119877b6e3ef56a744fda6
     if ((event.keyCode === undefined) || (event.keyCode === 13)) {
         let priority = event.target.parentNode.getAttribute("name").slice(0, 4);
         if ((priority === "high") && (inputHi.value !== "")) {
