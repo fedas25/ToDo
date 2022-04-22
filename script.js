@@ -28,27 +28,26 @@ let renderTask = () => {              //  +_+
                 linkingDeleteIcon(list.list[i].id);
                 linkingCheckboxTodo(list.list[i].id);
             }
-
         }
     }
 }
 
-let clearTask = () => {   // clears tasks from doom                +_+
+let clearTask = () => {   // clears tasks from doom                   +_+
     let tasks = document.querySelectorAll('.form_task');
     for (const task of tasks) {
         task.remove();
     }
 };
 
-let displayTask = () => { // displays current tasks from the list  +_+
+let displayTask = () => { // displays current tasks from the list      +_+
     clearTask();
     renderTask();
 }
 
-let createTask = (event) => {   //                                 +_+
+let createTask = (event) => {   //  from list                              +_+
     if ((event.keyCode === undefined) || (event.keyCode === 13)) {
         let priority = event.target.parentNode.getAttribute("name").slice(0, 4);
-        if (priority === "high") {
+        if ((priority === "high") && (inputHi.value !== "")) {
             list.list.push(
                 {
                     id: list.list.length + 1,
@@ -58,7 +57,7 @@ let createTask = (event) => {   //                                 +_+
                 }
             )
             inputHi.value = '';
-        } else {
+        } else if (inputLow.value !== "") {
             list.list.push(
                 {
                     id: list.list.length + 1,
@@ -69,11 +68,11 @@ let createTask = (event) => {   //                                 +_+
             )
             inputLow.value = '';
         }
-    displayTask();
+        displayTask();
     }
 }
 
-let linkingDeleteIcon = (idTask) => { 
+let linkingDeleteIcon = (idTask) => {
     document.querySelector(`div[formid="${idTask}"`).childNodes[5].addEventListener('click', deleteTask);
 }
 
@@ -93,7 +92,7 @@ let linkingCheckboxTodo = (idTask) => {           //                            
 
 let changePriority = (checkbox) => { // добавить обработку виполненности с помощью шарика через id задания     +_+
     let task = checkbox.target.parentNode;
-    if (task.getAttribute("formid") == null ) {
+    if (task.getAttribute("formid") == null) {
         task = task.parentNode;
     }
 
