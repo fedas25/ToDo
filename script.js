@@ -1,32 +1,38 @@
-const list = {
-    list: [] // with object {id, name, status //done todo, priority //low high}
-}
+const list = [] // with object {id, name, status //done todo, priority //low high}
+
+let formHi = document.querySelector('div[name="high_priority"]');
+let inputHi = document.querySelector('div[name="high_priority"] > .input');
+let buttonHi = document.querySelector('div[name="high_priority"] > .add');
+
+let formLow = document.querySelector('div[name="low_priority"]');
+let inputLow = document.querySelector('div[name="low_priority"] > .input');
+let buttonLow = document.querySelector('div[name="low_priority"] > .add');
 
 let renderTask = () => {              //  +_+
-    for (let i = 0; i < list.list.length; i++) {
-        if (list.list[i] !== "") {
-            if (list.list[i].priority === "high") {
+    for (let i = 0; i < list.length; i++) {
+        if (list[i] !== "") {
+            if (list[i].priority === "high") {
                 formHi.insertAdjacentHTML('afterend',
-                    `<div formid="${list.list[i].id}" class="form_task ${list.list[i].status}">
+                    `<div formid="${list[i].id}" class="form_task ${list[i].status}">
                     <div class="checkbox">
                         <div class="checkbox_circle"></div>
                     </div>
-                    <div class="task">${list.list[i].name}</div>
+                    <div class="task">${list[i].name}</div>
                     <img name="high" class="close_icon" src="close-icon.svg">
                 </div>`);
-                linkingDeleteIcon(list.list[i].id);
-                linkingCheckboxTodo(list.list[i].id);
+                linkingDeleteIcon(list[i].id);
+                linkingCheckboxTodo(list[i].id);
             } else {
                 formLow.insertAdjacentHTML('afterend',
-                    `<div formid="${list.list[i].id}" class="form_task ${list.list[i].status}">
+                    `<div formid="${list[i].id}" class="form_task ${list[i].status}">
                     <div class="checkbox">
                         <div class="checkbox_circle"></div>
                     </div>
-                    <div class="task">${list.list[i].name}</div>
+                    <div class="task">${list[i].name}</div>
                     <img name="low" class="close_icon" src="close-icon.svg">
                 </div>`);
-                linkingDeleteIcon(list.list[i].id);
-                linkingCheckboxTodo(list.list[i].id);
+                linkingDeleteIcon(list[i].id);
+                linkingCheckboxTodo(list[i].id);
             }
         }
     }
@@ -48,9 +54,9 @@ let createTask = (event) => {   //  from list                              +_+
     if ((event.keyCode === undefined) || (event.keyCode === 13)) {
         let priority = event.target.parentNode.getAttribute("name").slice(0, 4);
         if ((priority === "high") && (inputHi.value !== "")) {
-            list.list.push(
+            list.push(
                 {
-                    id: list.list.length + 1,
+                    id: list.length + 1,
                     name: inputHi.value,
                     status: "todo",
                     priority: priority
@@ -58,9 +64,9 @@ let createTask = (event) => {   //  from list                              +_+
             )
             inputHi.value = '';
         } else if (inputLow.value !== "") {
-            list.list.push(
+            list.push(
                 {
-                    id: list.list.length + 1,
+                    id: list.length + 1,
                     name: inputLow.value,
                     status: "todo",
                     priority: priority.slice(0, 3)
@@ -78,9 +84,9 @@ let linkingDeleteIcon = (idTask) => {
 
 let deleteTask = (task) => { // from list                                                                      +_+
     let id_task = task.target.parentNode.getAttribute("formid");
-    for (let i = 0; i < list.list.length; i++) {
-        if (list.list[i].id == id_task) {
-            list.list[i] = "";
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].id == id_task) {
+            list[i] = "";
         }
     }
     displayTask();
@@ -104,24 +110,16 @@ let changePriority = (checkbox) => { // добавить обработку ви
         task.classList.add("done");
     }
 
-    for (let i = 0; i < list.list.length; i++) {
-        if (task.getAttribute("formid") == list.list[i].id) {
-            if (list.list[i].status == "todo") {
-                list.list[i].status = "done";
+    for (let i = 0; i < list.length; i++) {
+        if (task.getAttribute("formid") == list[i].id) {
+            if (list[i].status == "todo") {
+                list[i].status = "done";
             } else {
-                list.list[i].status = "todo";
+                list[i].status = "todo";
             }
         }
     }
 }
-
-let formHi = document.querySelector('div[name="high_priority"]');
-let inputHi = document.querySelector('div[name="high_priority"] > .input');
-let buttonHi = document.querySelector('div[name="high_priority"] > .add');
-
-let formLow = document.querySelector('div[name="low_priority"]');
-let inputLow = document.querySelector('div[name="low_priority"] > .input');
-let buttonLow = document.querySelector('div[name="low_priority"] > .add');
 
 inputHi.addEventListener('keydown', createTask);
 buttonHi.addEventListener('click', createTask);
