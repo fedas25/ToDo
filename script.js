@@ -8,7 +8,7 @@ let formLow = document.querySelector('div[name="low_priority"]');
 let inputLow = document.querySelector('div[name="low_priority"] > .input');
 let buttonLow = document.querySelector('div[name="low_priority"] > .add');
 
-let renderTask = () => {              //  +_+
+let renderTask = () => {              //  arr.forEach
     for (let i = 0; i < list.length; i++) {
         if (list[i] !== "") {
             if (list[i].priority === "high") {
@@ -40,7 +40,7 @@ let renderTask = () => {              //  +_+
 
 let clearTask = () => {   // clears tasks from doom                   +_+
     let tasks = document.querySelectorAll('.form_task');
-    for (const task of tasks) {
+    for (const task of tasks) { 
         task.remove();
     }
 };
@@ -85,9 +85,8 @@ let linkingDeleteIcon = (idTask) => {
 let deleteTask = (task) => { // from list                                                                      +_+
     let id_task = task.target.parentNode.getAttribute("formid");
     for (let i = 0; i < list.length; i++) {
-        if (list[i].id == id_task) {
-            list[i] = "";
-        }
+        if (list[i].id == id_task) list[i] = "";
+           
     }
     displayTask();
 };
@@ -112,11 +111,9 @@ let changePriority = (checkbox) => { // добавить обработку ви
 
     for (let i = 0; i < list.length; i++) {
         if (task.getAttribute("formid") == list[i].id) {
-            if (list[i].status == "todo") {
-                list[i].status = "done";
-            } else {
+            list[i].status == "todo" ? 
+                list[i].status = "done" :
                 list[i].status = "todo";
-            }
         }
     }
 }
