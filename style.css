@@ -117,3 +117,7 @@ body {
 .todo > .checkbox > .checkbox_circle {
     display: none;
 }
+
+p {
+    display: inline;
+}

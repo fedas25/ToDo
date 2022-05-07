@@ -17,7 +17,7 @@ let renderTask = () => {              //  arr.forEach
                     <div class="checkbox">
                         <div class="checkbox_circle"></div>
                     </div>
-                    <div class="task">${list[i].name}</div>
+                    <div class="task"> <p> ${list[i].name} </p> </div> 
                     <img name="high" class="close_icon" src="close-icon.svg">
                 </div>`);
                 linkingDeleteIcon(list[i].id);
