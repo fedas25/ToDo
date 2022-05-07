@@ -1,0 +1,14 @@
+User-agent: Yandex
+User-agent: Googlebot
+User-agent: *
+Disallow: /*.pdf
+Disallow: /*.xls
+Disallow: /*.doc
+Disallow: /*.ppt
+Disallow: /*.txt
+Allow: /*.css
+Allow: /*.js
+Clean-param: utm_source&utm_medium&utm_term&utm_content&utm_campaign&yclid&gclid&_openstat&from /
+Disallow: /*utm
+Disallow: /*clid=
+Disallow: /*openstat

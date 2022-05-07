@@ -114,6 +114,6 @@ body {
     background-color: #5182B0;
 }
 
-.todo>.checkbox>.checkbox_circle {
+.todo > .checkbox > .checkbox_circle {
     display: none;
 }
