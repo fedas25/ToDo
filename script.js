@@ -1,4 +1,6 @@
-const list = [] // with object {id, name, status //done todo, priority //low high}
+let list = [] // with object {id, name, status //done todo, priority //low high}
+
+if (localStorage.length !== 0) list = JSON.parse(localStorage.list);
 
 let formHi = document.querySelector('div[name="high_priority"]');
 let inputHi = document.querySelector('div[name="high_priority"] > .input');
@@ -48,6 +50,9 @@ let clearTask = () => {   // clears tasks from doom                   +_+
 let displayTask = () => { // displays current tasks from the list      +_+
     clearTask();
     renderTask();
+    
+    localStorage.list = JSON.stringify(list);
+    
 }
 
 let createTask = (event) => {   //  from list                              +_+
@@ -124,3 +129,5 @@ inputLow.addEventListener('keydown', createTask);
 buttonLow.addEventListener('click', createTask);
 
 displayTask();
+
+setTimeout(() => localStorage.clear(), 864e5);
