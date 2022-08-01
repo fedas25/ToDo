@@ -55,28 +55,21 @@ let displayTask = () => { // displays current tasks from the list      +_+
     
 }
 
-let createTask = (event) => {   //  from list                              +_+
+function Task (id, name, status, priority) {
+    this.id = id; 
+    this.name = name; 
+    this.status = status; 
+    this.priority = priority; 
+}
+
+let createTask = (event) => {   //  from list     +_+  
     if ((event.keyCode === undefined) || (event.keyCode === 13)) {
         let priority = event.target.parentNode.getAttribute("name").slice(0, 4);
         if ((priority === "high") && (inputHi.value !== "")) {
-            list.push(
-                {
-                    id: list.length + 1,
-                    name: inputHi.value,
-                    status: "todo",
-                    priority: priority
-                }
-            )
+            list.push( new Task( list.length + 1, inputHi.value, "todo", priority ) );
             inputHi.value = '';
         } else if (inputLow.value !== "") {
-            list.push(
-                {
-                    id: list.length + 1,
-                    name: inputLow.value,
-                    status: "todo",
-                    priority: priority.slice(0, 3)
-                }
-            )
+            list.push( new Task( list.length + 1, inputLow.value, "todo", priority ) );
             inputLow.value = '';
         }
         displayTask();
