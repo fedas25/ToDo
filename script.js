@@ -1,4 +1,4 @@
-let list = [] // with object {id, name, status //done todo, priority //low high}
+let list = []
 
 if (localStorage.length !== 0) list = JSON.parse(localStorage.list);
 
@@ -10,7 +10,7 @@ let formLow = document.querySelector('div[name="low_priority"]');
 let inputLow = document.querySelector('div[name="low_priority"] > .input');
 let buttonLow = document.querySelector('div[name="low_priority"] > .add');
 
-let renderTask = () => {              //  arr.forEach
+let renderTask = () => {
     for (let i = 0; i < list.length; i++) {
         if (list[i] !== "") {
             if (list[i].priority === "high") {
@@ -40,14 +40,14 @@ let renderTask = () => {              //  arr.forEach
     }
 }
 
-let clearTask = () => {   // clears tasks from doom                   +_+
+let clearTask = () => {
     let tasks = document.querySelectorAll('.form_task');
     for (const task of tasks) { 
         task.remove();
     }
 };
 
-let displayTask = () => { // displays current tasks from the list      +_+
+let displayTask = () => {
     clearTask();
     renderTask();
     
@@ -62,7 +62,7 @@ function Task (id, name, status, priority) {
     this.priority = priority; 
 }
 
-let createTask = (event) => {   //  from list     +_+  
+let createTask = (event) => {
     if ((event.keyCode === undefined) || (event.keyCode === 13)) {
         let priority = event.target.parentNode.getAttribute("name").slice(0, 4);
         if ((priority === "high") && (inputHi.value !== "")) {
@@ -80,7 +80,7 @@ let linkingDeleteIcon = (idTask) => {
     document.querySelector(`div[formid="${idTask}"`).childNodes[5].addEventListener('click', deleteTask);
 }
 
-let deleteTask = (task) => { // from list                                                                      +_+
+let deleteTask = (task) => {
     let id_task = task.target.parentNode.getAttribute("formid");
     for (let i = 0; i < list.length; i++) {
         if (list[i].id == id_task) list[i] = "";
@@ -89,11 +89,11 @@ let deleteTask = (task) => { // from list                                       
     displayTask();
 };
 
-let linkingCheckboxTodo = (idTask) => {           //                                                            +_+
+let linkingCheckboxTodo = (idTask) => {
     document.querySelector(`div[formid="${idTask}"`).childNodes[1].addEventListener('click', changePriority);
 }
 
-let changePriority = (checkbox) => { // добавить обработку виполненности с помощью шарика через id задания     +_+
+let changePriority = (checkbox) => {
     let task = checkbox.target.parentNode;
     if (task.getAttribute("formid") == null) {
         task = task.parentNode;
